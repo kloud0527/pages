@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113.5">
+  <link rel="stylesheet" href="留言板.css">
+</head>
+
+<body>
+  <div id="header">
+    <nav>
+      <div class="menu">
+        <li><a href="#">首页</a></li>
+        <li><a href="#">关于我</a></li>
+        <li><a href="#">博客文章</a></li>
+        <li><a href="#">作品集</a></li>
+        <li><a href="#">联系我</a></li>
+      </div>
+    </nav>
+  </div>
+  <div id="content">
+    <div id="content1">
+
+      <FORM METHOD=POST ACTION=" ">
+
+        <form>
+          <div class="flex-container-info">
+            <input  placeholder="昵称" id="name" name="name" type="name" list="options"/>
+            <datalist id="options">
+                <option value="张三"></option>
+                <option value="李四"></option>
+            </datalist>
+
+            <input type="email" id="email" name="email" placeholder="邮箱"><br>
+          </div>
+          <div class="flex-container-content">
+
+            <textarea id="message" name="message" rows="10" cols="50" placeholder="有什么想说的……"></textarea>
+            <button type="submit" onclick="printForm(event)">提交</button>
+          </div>
+        </form>
+        <script>
+          function printForm(event) {
+            event.preventDefault(); // 防止表单提交刷新页面
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const message = document.getElementById("message").value;
+
+            console.log("昵称:", name);
+            console.log("邮箱:", email);
+            console.log("留言:", message);
+          }
+        </script>
+    </div>
+  </div>
+</body>
+
+</html>
