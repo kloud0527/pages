@@ -1,99 +1,144 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="Content-Style-Type" content="text/css">
-  <title>KlightDays</title>
+  <title></title>
   <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2113.5">
-  <link rel="stylesheet" href="主页面.css">
+  <meta name="CocoaVersion" content="2487.3">
+  <script>
+    // js部分
+const fs = require('fs');
+const path = require('path');
+const http = require('http');
+const url = require('url');
+const getHostName = function (str) {
+    let { hostname } = url.parse(str);
+    return hostname;
+};
+ 
+http.createServer((req, res) => {
+    let refer = req.headers['referer'] || req.headers['referrer'];  // 请求头都是小写的
+    // 先看一下refer的值，去和host的值作对比，不相等就需要防盗链了  
+    // 要读取文件 返回给客户端
+    let { pathname } = url.parse(req.url);
+    let src = path.join(__dirname, 'public', '.' + pathname);
+    // src代表我要找的文件
+    
+    fs.stat(src, err => {   // 先判断文件存不存在
+        if (!err) {
+            if (refer) {    // 不是所有图片都有来源
+                let referHost = getHostName(refer);
+                let host = req.headers['host'].split(':')[0];
+                
+                if (referHost !== host) {
+                    // 防盗链
+                    fs.createReadStream(path.join(__dirname, 'public', './1.jpg')).pipe(res);
+                } else {
+                    // 正常显示，如果路径存在，可以正常显示直接返回
+                    fs.createReadStream(src).pipe(res);
+                }
+            } else {
+                // 正常显示，如果路径存在，可以正常显示直接返回
+                fs.createReadStream(src).pipe(res);
+            }
+        } else {
+            res.end('end');
+        }
+    });
+    
+}).listen(8888);
+  </script>
+  <style type="text/css">
+        .image-container {
+            width: calc(33.33% - 20px); /* 10px为右边距，使得三张图片之间有空隙 */
+            float: left;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            margin-right: 20px; /* 右边距 */
+            border-radius: 20px;
+        }
+
+        .image-container:last-child {
+            margin-right: 0; /* 最后一张图片不添加右边距 */
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: filter 0.3s ease;
+        }
+        .图片页面 img{
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: filter 0.3s ease;
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .image-container:hover img {
+            filter: brightness(70%);
+        }
+
+        .image-container:hover .image-overlay {
+            opacity: 1;
+        }
+  </style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+       
+    </style>
 </head>
-
 <body>
-
-  <div id="content">
-    <section>
-      <div id="content1">
-        <img class="imgtitle" src="./标题.png" width="600px">
-        <p style="  margin-top: auto; margin-bottom: auto;">·我固执而焦虑，仍渴求盼望·</p>
-      </div>
-    </section>
-  </div>
-  <div id="header">
-    <nav>
-      <div class="menu">
-        <li><a href="#content1">首页</a></li>
-        <li><a href="#content2">关于我</a></li>
-        <li><a href="#content3">博客文章</a></li>
-        <li><a href="#">作品集</a></li>
-        <li><a href="留言板.html">联系我</a></li>
-      </div>
-    </nav>
-  </div>
-
-  <section>
-    <div id="content2">
-      <div class="leftside">
-        <img src="./2.1.png" width="100">
-        <p>Kloud</p>
-        <p>infj</p>
-        <p>QQ:2414970486</p>
-      </div>
-      <div class="rightside">
-        <h1 style="color: aliceblue;margin: auto;">关于我</h1>
-        <p>But take heart! I have overcome the world.</p>
-        <div class="frame">
-          <p>Hi，我是Kloud，一个总是沉迷于自己小世界中的普通人。<br>漂浮不定，追求自由。<br>关于生活，什么都会写一点，但还是希望能写下更深刻的东西。<br>偶尔负能，时常叛逆，永远寻求盼望。</p>
-        </div>
-        <div class="frame">
-          <p>视觉传达设计生，但无时无刻不在寻找新的出路。<br>爱好广泛，在「动手」方面总是非常自信。<br>弹琴画画手作，样样不精但我热爱。<br>过多的选择有时会让我陷入迷茫，所以在缝隙中寻找自我。</p>
-        </div>
-        <div class="frame">
-          <p>我愿意相信我有我存在的意义。</p>
-        </div>
-      </div>
-
+<div class="图片页面">
+<img src="1.png" alt="Your Image">
+</div>
+<div class="image-container" onclick="window.location.href='青南山.html'">
+    <img src="青南山.png" alt="Image 1">
+    <div class="image-overlay">
+        <p>青南山<br>竹旅融合品牌全案策划</p>
     </div>
-  </section>
-  <section>
-    <div id="content3">
-      <div class="side3"></div>
-      <div class="main3">
-        <div style="display: grid;gap: 15px; margin-top: 20px;">
-          <div class="frame3">
-            <a class="img" href="img/博客页/逃跑的先知/博客页-逃跑的先知.html">
-              <img src="./3.1.png" width="400px">
-            </a>
-          </div>
-          <div class="frame3"><img src="./3.3.jpg" width="400px"></div>
-          <div class="frame3">
-            <a class="img" href="img/博客页/破碎我/博客页-破碎我.html">
-              <img src="./3.4.png" width="400px">
-            </a>
-          </div>
-        </div>
-        <div style="display: grid;gap: 15px;margin-top: 20px;">
-          <div class="frame3">
-            <a class="img" href="img/博客页/我和「」的距离/博客页-我和「」的距离.html">
-              <img src="./3.2.png" width="400px">
-            </a>
-          </div>
-          <div class="frame3">
-            <a class="img" href="img/博客页/已然得胜/博客页-已然得胜.html">
-              <img src="./3.5.png" width="400px">
-            </a>
-          </div>
-          <div class="frame3"><img src="./3.6.png" width="400px"></div>
-        </div>
-      </div>
-      <div class="side3"></div>
+</div>
+
+<div class="image-container" onclick="window.location.href='未可.html'">
+    <img src="未可.png" alt="Image 2">
+    <div class="image-overlay">
+        <p>未可<br>卫生巾品牌海报设计</p>
     </div>
-  </section>
-  <div id="footer">
-    <a style="color: aliceblue;margin-top: 20px;" href="留言板.html">给我留言</a>
-    <p style="font-size: xx-small;padding: 20px;color: rgb(150, 150, 150);">Copyright © 2023 KlightDays. All rights reserved.</p>
-  </div>
+</div>
+
+<div class="image-container" onclick="window.location.href='平面设计.html'">
+    <img src="平面设计.png" alt="Image 3">
+    <div class="image-overlay">
+        <p>其余视觉设计作品</p>
+    </div>
+</div>
+<div class="图片页面">
+    <img src="2.png" alt="Your Image">
+</div>
+</div>
+
 </body>
-
 </html>
